@@ -14,7 +14,7 @@ export const Home = () => {
 
   const { data } = useQuery({
     queryFn: AplicativoService.listarAplicativos,
-    queryKey: ["aplicativos"],
+    queryKey: ["listar-aplicativos"],
     staleTime: 1000 * 60, //1m
     placeholderData: keepPreviousData,
   });

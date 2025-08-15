@@ -133,7 +133,7 @@ export const AppCard = ({ aplicativo }) => {
         </Text>
       </Flex>
 
-      <Link to={`/assistentes?searchTerm=${aplicativo?._id}`}>
+      <Link to={`/assistentes?searchTerm=${aplicativo?.nome}`}>
         <Button
           unstyled
           position="absolute"

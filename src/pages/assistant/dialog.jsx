@@ -15,7 +15,8 @@ import { ORIGENS } from "../../constants/origens";
 
 export const AssistenteConfigDialog = ({
   defaultValues = null,
-  label = "Configurar assistente",
+  label = "Assistente",
+  trigger,
 }) => {
   const [data, setData] = useState(defaultValues);
   const [open, setOpen] = useState(false);
@@ -50,12 +51,10 @@ export const AssistenteConfigDialog = ({
 
   return (
     <Box>
-      <Box onClick={() => setOpen(true)} asChild>
-        {defaultValues ? (
-          <IconTrigger />
-        ) : (
-          <DefaultTrigger title="Criar um assistente" />
-        )}
+      <Box onClick={() => setOpen(true)}>
+        {trigger && trigger()}
+        {defaultValues && !trigger && <IconTrigger />}
+        {!defaultValues && !trigger && <DefaultTrigger />}
       </Box>
       <FormDialog
         data={data}

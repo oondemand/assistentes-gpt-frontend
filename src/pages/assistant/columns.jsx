@@ -4,6 +4,7 @@ import { DefaultEditableCell } from "../../components/dataGrid/cells/defaultEdit
 import { AssistenteConfigDialog } from "./dialog";
 import { TableActionsCell } from "../../components/dataGrid/cells/tableActionsCell";
 import { DeleteAssistenteConfigAction } from "../../components/dataGrid/actions/deleteAssistenteConfigButton";
+import { SelectAplicativoCell } from "../../components/dataGrid/cells/selectAplicativoCell";
 
 export const makeAssistenteConfigDynamicColumns = () => {
   const STATUS = [
@@ -23,6 +24,7 @@ export const makeAssistenteConfigDynamicColumns = () => {
             label="Assistente"
             defaultValues={{
               ...props.row.original,
+              aplicativo: props?.row?.original?.aplicativo?._id,
             }}
           />
         </TableActionsCell>
@@ -43,6 +45,14 @@ export const makeAssistenteConfigDynamicColumns = () => {
       enableColumnFilter: true,
       enableSorting: false,
       meta: { filterKey: "descricao" },
+    },
+    {
+      accessorKey: "aplicativo",
+      header: "Aplicativo",
+      cell: SelectAplicativoCell,
+      enableColumnFilter: true,
+      enableSorting: false,
+      meta: { filterKey: "aplicativo", filterVariant: "selectAplicativo" },
     },
     {
       accessorKey: "instrucao",

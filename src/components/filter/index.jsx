@@ -1,5 +1,6 @@
 import { DebouncedInput } from "../DebouncedInput";
 import { NativeSelectField, NativeSelectRoot } from "../ui/native-select";
+import { SelectAplicativoFilter } from "./selectAplicativo";
 import { SelectListaFilter } from "./selectLista";
 import { SelectPrestadorFilter } from "./selectPrestador";
 
@@ -37,6 +38,20 @@ export function Filter({ fieldMeta, onChange, value, ...props }) {
       <SelectPrestadorFilter
         onChange={(e) => {
           onChange({ [fieldMeta.filterKey]: { _id: e?._id, nome: e?.nome } });
+        }}
+        value={value}
+      />
+    );
+  }
+
+  if (
+    fieldMeta.filterVariant &&
+    fieldMeta.filterVariant === "selectAplicativo"
+  ) {
+    return (
+      <SelectAplicativoFilter
+        onChange={(e) => {
+          onChange({ [fieldMeta.filterKey]: e.target.value });
         }}
         value={value}
       />
