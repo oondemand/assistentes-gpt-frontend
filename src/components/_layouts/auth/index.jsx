@@ -52,9 +52,11 @@ export const AuthLayout = () => {
   };
 
   if (!user && isLoading === false) {
-    window.location.href = `${env.VITE_MEUS_APPS_URL}/login`;
+    // window.location.href = `${env.VITE_MEUS_APPS_URL}/login`;
     return;
   }
+
+  console.log("USER", user);
 
   return (
     <Flex direction="row" minHeight="100vh" minW="100vw">
@@ -167,7 +169,9 @@ export const AuthLayout = () => {
         paddingBottom="0"
         overflow="hidden"
       >
-        {!isLoading ? <Outlet /> : <Spinner m="8" />}
+        <Flex flex="1" flexDir="column" py="8" px="6" bg="#F8F9FA">
+          {!isLoading ? <Outlet /> : <Spinner />}
+        </Flex>
       </Flex>
     </Flex>
   );

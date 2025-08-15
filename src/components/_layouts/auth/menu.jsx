@@ -1,135 +1,23 @@
-import {
-  Users,
-  Settings,
-  LogOut,
-  ListChecks,
-  CalendarSync,
-  TicketCheckIcon,
-  NotepadText,
-  NotepadTextDashed,
-  Notebook,
-  Rotate3D,
-  HelpCircle,
-  MessageCircle,
-  LifeBuoy,
-} from "lucide-react";
-import { Chart } from "../../svg/chart";
-import { InvertedChart } from "../../svg/invertedChart";
+import { Settings, HardHat, LayoutDashboard } from "lucide-react";
 
 export const menuItems = [
   {
-    title: "Dashboard",
-    icon: Chart,
+    title: "Aplicativos",
+    icon: () => <LayoutDashboard strokeWidth={2.25} size={20} />,
     href: "/",
   },
   {
-    title: "Central Serviços Tomados",
-    icon: InvertedChart,
-    href: "/servicos-tomados",
-  },
-  {
-    title: "Serviços",
-    icon: ListChecks,
-    href: "/servicos",
-  },
-  {
-    title: "Documentos Cadastrais",
-    href: "/documentos-cadastrais",
-    icon: Notebook,
-    rules: ["admin", "tomador"],
-  },
-  {
-    title: "Documentos Fiscais",
-    href: "/documentos-fiscais",
-    icon: NotepadText,
-    rules: ["admin", "tomador"],
-  },
-  {
-    title: "Planejamento",
-    href: "/planejamento",
-    icon: CalendarSync,
-  },
-  {
-    title: "Clientes e prestadores",
-    icon: Users,
-    href: "/pessoas",
-  },
-  {
-    title: "Integrações",
-    icon: Rotate3D,
-    rules: ["admin"],
-    subLinks: [
-      {
-        title: "Cliente/prestador central -> Omie",
-        href: "/integracao/pessoa/central-omie",
-      },
-      {
-        title: "Cliente/prestador central <- Omie",
-        href: "/integracao/pessoa/omie-central",
-      },
-      {
-        title: "Conta pagar central -> Omie",
-        href: "/integracao/conta-pagar/central-omie",
-      },
-      {
-        title: "Conta pagar central <- Omie",
-        href: "/integracao/conta-pagar/omie-central",
-      },
-      {
-        title: "Anexos central -> Omie",
-        href: "/integracao/anexos/central-omie",
-      },
-    ],
+    title: "Assistentes",
+    icon: HardHat,
+    href: "/assistentes",
   },
   {
     title: "Configurações",
     icon: Settings,
     subLinks: [
       {
-        title: "Listas",
-        href: "/listas",
-      },
-      {
-        title: "Moedas",
-        href: "/moedas",
-      },
-      {
-        title: "Registros",
-        href: "/registros",
-      },
-      {
         title: "Sistema",
         href: "/sistema",
-      },
-      {
-        title: "Etapas",
-        href: "/etapas",
-      },
-      {
-        title: "Assistentes",
-        href: "/assistentes",
-      },
-      {
-        title: "Integrações",
-        href: "/configuracoes/integracao",
-      },
-    ],
-  },
-  {
-    title: "Suporte",
-    icon: LifeBuoy,
-    subLinks: [
-      {
-        title: "Doc",
-        href: "/doc",
-      },
-      {
-        title: "Roteiro de testes",
-        href: "/roteiro-de-testes",
-      },
-      {
-        title: "Log de mudanças",
-        href: "/changelog",
       },
     ],
   },

@@ -23,12 +23,12 @@ export const AssistenteConfigDialog = ({
 
   const updateAssistenteConfig = useUpdateAssistantConfig({
     origem: ORIGENS.FORM,
-    onSuccess: (data) => open && setData(data),
+    onSuccess: (data) => open && setData(data?.assistente),
   });
 
   const createAssistenteConfig = useCreateAssistantConfig({
     origem: ORIGENS.FORM,
-    onSuccess: (data) => open && setData(data),
+    onSuccess: (data) => open && setData(data?.assistente),
   });
 
   const onSubmit = async (values) => {

@@ -1,23 +1,34 @@
-import { Input, Box, Text, Textarea } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Text, Textarea } from "@chakra-ui/react";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const TextareaField = ({ inputStyle, w, ...props }) => {
-  const [value, setValue] = useState("");
-
-  const onblur = async () => {
-    if (value !== "" && value !== props?.data?.[props.accessorKey]) {
-      await props.onBlurFn({ body: { [props.accessorKey]: value } });
-      props.data && (props.data[props.accessorKey] = value);
-      return;
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      props?.setValue(props?.accessorKey, props.initialValue);
     }
   };
 
-  // const handleKeyDown = (event) => {
-  //   if (event.key === "Escape") {
-  //     event.preventDefault();
-  //     setValue(initialValue);
-  //   }
-  // };
+  const { requestConfirmation } = useConfirmation();
+
+  const onBlur = async (ev) => {
+    if (props?.confirmAction) {
+      props.confirmationRefFn.current = async () => {
+        const { action } = await requestConfirmation({
+          title: props.confirmAction?.title,
+          description: props?.confirmAction?.description,
+        });
+
+        if (action === "canceled") {
+          props?.setValue(props?.accessorKey, props.initialValue);
+        }
+
+        return action;
+      };
+    }
+
+    props.field.onBlur(ev);
+  };
 
   return (
     <Box>
@@ -25,15 +36,17 @@ export const TextareaField = ({ inputStyle, w, ...props }) => {
         {props.label}
       </Text>
       <Textarea
+        {...props.field}
+        onBlur={onBlur}
+        disabled={props?.disabled}
+        size="sm"
         fontSize="sm"
-        w="w"
-        mb="1"
         variant="flushed"
-        disabled={props.disabled ?? !props.data}
-        value={value}
-        onBlur={onblur}
-        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
+      <Text mt="0.5" fontSize="xs" color="red.400">
+        {props.error}
+      </Text>
     </Box>
   );
 };

@@ -6,7 +6,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { SistemaService } from "../../service/sistema";
 import { toaster } from "../../components/ui/toaster";
 import { formatDate } from "../../utils/formatting";
-import { TesteEnvioEmailDialog } from "./dialog";
 import { queryClient } from "../../config/react-query";
 import { ORIGENS } from "../../constants/origens";
 
@@ -78,7 +77,6 @@ export const SistemaPage = () => {
                     fields={form.fields}
                     gap={6}
                   />
-                  {form.title === "Geral" && <TesteEnvioEmailDialog />}
                 </Box>
               </Box>
             </Box>

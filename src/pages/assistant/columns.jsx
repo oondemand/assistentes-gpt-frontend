@@ -1,4 +1,3 @@
-import React from "react";
 import { SelectAutoCompleteCell } from "../../components/dataGrid/cells/selectAutoComplete";
 
 import { DefaultEditableCell } from "../../components/dataGrid/cells/defaultEditable";
@@ -6,9 +5,12 @@ import { AssistenteConfigDialog } from "./dialog";
 import { TableActionsCell } from "../../components/dataGrid/cells/tableActionsCell";
 import { DeleteAssistenteConfigAction } from "../../components/dataGrid/actions/deleteAssistenteConfigButton";
 
-import { SelectAssistantCell } from "../../components/dataGrid/cells/selectAssistantCell";
-
 export const makeAssistenteConfigDynamicColumns = () => {
+  const STATUS = [
+    { label: "Ativo", value: "ativo" },
+    { label: "Inativo", value: "inativo" },
+  ];
+
   return [
     {
       accessorKey: "acoes",
@@ -27,42 +29,47 @@ export const makeAssistenteConfigDynamicColumns = () => {
       ),
     },
     {
-      accessorKey: "modulo",
-      header: "Modulo",
+      accessorKey: "nome",
+      header: "Nome",
       cell: DefaultEditableCell,
       enableColumnFilter: true,
       enableSorting: false,
-      meta: { filterKey: "modulo" },
+      meta: { filterKey: "nome" },
     },
     {
-      accessorKey: "assistente",
-      header: "Assistente",
-      cell: SelectAssistantCell,
+      accessorKey: "descricao",
+      header: "Descrição",
+      cell: DefaultEditableCell,
       enableColumnFilter: true,
       enableSorting: false,
-      meta: { filterKey: "assistente" },
+      meta: { filterKey: "descricao" },
+    },
+    {
+      accessorKey: "instrucao",
+      header: "Instrução",
+      cell: DefaultEditableCell,
+      enableColumnFilter: true,
+      enableSorting: false,
+      meta: { filterKey: "instrucao" },
+    },
+    {
+      accessorKey: "mensagemInicial",
+      header: "Mensagem inicial",
+      cell: DefaultEditableCell,
+      enableColumnFilter: true,
+      enableSorting: false,
+      meta: { filterKey: "mensagemInicial" },
     },
     {
       accessorKey: "status",
       header: "Status",
-      cell: (props) => (
-        <SelectAutoCompleteCell
-          {...props}
-          options={[
-            { label: "Ativo", value: "ativo" },
-            { label: "Inativo", value: "inativo" },
-          ]}
-        />
-      ),
+      cell: (props) => <SelectAutoCompleteCell {...props} options={STATUS} />,
       enableColumnFilter: true,
       enableSorting: false,
       meta: {
         filterKey: "status",
         filterVariant: "select",
-        filterOptions: [
-          { label: "Ativo", value: "ativo" },
-          { label: "Inativo", value: "inativo" },
-        ],
+        filterOptions: STATUS,
       },
     },
   ];
