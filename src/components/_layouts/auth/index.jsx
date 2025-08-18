@@ -95,6 +95,8 @@ export const AuthLayout = () => {
           </Link>
         </Flex>
         {menuItems.map((item, index) => {
+          if (item?.rules?.includes(user?.tipo)) return;
+
           if (item?.subLinks)
             return (
               <AccordionRoot collapsible key={`${item.title}-${index}`}>
@@ -122,16 +124,19 @@ export const AuthLayout = () => {
                     </Flex>
                   </AccordionItemTrigger>
                   <AccordionItemContent w="full">
-                    {item?.subLinks.map((item, i) => (
-                      <Box w="full" pb="2" key={`${item.title}-${index}`}>
-                        <NavLink
-                          to={item?.href ?? "#"}
-                          icon={item.icon}
-                          title={item.title}
-                          i={index}
-                        />
-                      </Box>
-                    ))}
+                    {item?.subLinks.map((item, i) => {
+                      if (item?.rules?.includes(user?.tipo)) return;
+                      return (
+                        <Box w="full" pb="2" key={`${item.title}-${index}`}>
+                          <NavLink
+                            to={item?.href ?? "#"}
+                            icon={item.icon}
+                            title={item.title}
+                            i={index}
+                          />
+                        </Box>
+                      );
+                    })}
                   </AccordionItemContent>
                 </AccordionItem>
               </AccordionRoot>
