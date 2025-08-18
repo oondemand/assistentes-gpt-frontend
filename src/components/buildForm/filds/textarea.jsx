@@ -36,13 +36,14 @@ export const TextareaField = ({ inputStyle, w, ...props }) => {
         {props.label}
       </Text>
       <Textarea
-        {...props.field}
         onBlur={onBlur}
         disabled={props?.disabled}
         size="sm"
         fontSize="sm"
         variant="flushed"
         onKeyDown={handleKeyDown}
+        {...props}
+        {...props.field}
       />
       <Text mt="0.5" fontSize="xs" color="red.400">
         {props.error}

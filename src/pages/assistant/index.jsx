@@ -1,7 +1,7 @@
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
-import { Filter, Table } from "lucide-react";
+import { Filter, Settings, Table } from "lucide-react";
 import { AssistantConfigService } from "../../service/assistant-config";
 import { DebouncedInput } from "../../components/DebouncedInput";
 import { useQueryParam } from "../../hooks/useQueryParam";
@@ -9,9 +9,29 @@ import { Link } from "react-router-dom";
 import { Tooltip } from "../../components/ui/tooltip";
 import { AssistenteConfigDialog } from "./dialog";
 import { DefaultTrigger } from "../../components/formDialog/form-trigger";
+import { SelectAplicativo } from "../../components/selectAplicativo";
+
+function agruparPorAppId(assistentes) {
+  if (!assistentes || assistentes.length === 0) return [];
+  return assistentes.reduce((grupo, assistente) => {
+    const appId = assistente.aplicativo?._id;
+    const appNome = assistente.aplicativo?.nome;
+
+    if (!grupo[appId]) {
+      grupo[appId] = {
+        nome: appNome,
+        assistentes: [],
+      };
+    }
+
+    grupo[appId].assistentes.push(assistente);
+    return grupo;
+  }, {});
+}
 
 export const Assistentes = () => {
   const [searchTerm, setSearchTerm] = useQueryParam("searchTerm");
+  const [app, setApp] = useQueryParam("app");
 
   const { data } = useQuery({
     queryFn: AssistantConfigService.listarAssistenteAtivos,
@@ -20,19 +40,26 @@ export const Assistentes = () => {
     placeholderData: keepPreviousData,
   });
 
-  const assistentesFiltrados =
+  const assistentesFiltradosPorTermoDeBusca =
     searchTerm?.toLowerCase()?.trim()?.length > 2
       ? data?.assistentes?.filter((assistente) => {
           const term = searchTerm?.toLowerCase()?.trim();
           return (
             assistente?.nome?.toLowerCase()?.includes(term) ||
-            assistente?.aplicativo?.nome?.toLowerCase().includes(term) ||
             assistente?._id === searchTerm ||
             assistente?.aplicativo?._id === searchTerm ||
             assistente?.aplicativo?.appKey === searchTerm
           );
         })
       : data?.assistentes;
+
+  const filtradosPorApp = app
+    ? assistentesFiltradosPorTermoDeBusca?.filter(
+        (assistente) => assistente?.aplicativo?._id === app
+      )
+    : assistentesFiltradosPorTermoDeBusca;
+
+  const assistentesFiltradosEAgrupados = agruparPorAppId(filtradosPorApp);
 
   return (
     <Box>
@@ -44,8 +71,7 @@ export const Assistentes = () => {
           <Tooltip content="Visualizar todos em tabela">
             <Link to="/assistentes/todos">
               <Button
-                color="purple.700"
-                bg="purple.200"
+                colorPalette="cyan"
                 p="1.5"
                 rounded="2xl"
                 cursor="pointer"
@@ -62,11 +88,22 @@ export const Assistentes = () => {
               <Button
                 unstyled
                 cursor="pointer"
-                onClick={() => setSearchTerm("")}
+                onClick={() => {
+                  setSearchTerm("");
+                  setApp("");
+                }}
               >
                 <Filter size={22} />
               </Button>
             </Tooltip>
+
+            <SelectAplicativo
+              value={[app]}
+              onValueChange={({ value }) => setApp(value[0])}
+              bg="white"
+              size="sm"
+              minW="2xs"
+            />
 
             <DebouncedInput
               size="sm"
@@ -85,10 +122,11 @@ export const Assistentes = () => {
               trigger={() => {
                 return (
                   <DefaultTrigger
+                    variant="solid"
                     title="Novo assistente"
-                    bg="purple.100"
-                    color="purple.700"
-                    _hover={{ bg: "purple.200" }}
+                    colorPalette="cyan"
+                    color="white"
+                    _hover={{ bg: "cyan.550" }}
                   />
                 );
               }}
@@ -97,46 +135,50 @@ export const Assistentes = () => {
         </Flex>
       </Flex>
       <Flex wrap="wrap" gap="8" mt="8">
-        {assistentesFiltrados?.map((item) => (
-          <AssistenteConfigDialog
-            defaultValues={{
-              ...item,
-              aplicativo: item?.aplicativo?._id,
-            }}
-            trigger={() => {
-              return (
-                <Box
-                  cursor="pointer"
-                  bg="white"
-                  rounded="lg"
-                  px="4"
-                  py="2"
-                  borderLeft="2px solid"
-                  borderColor="brand.300"
-                  w="256px"
-                  shadow="xs"
-                >
-                  <Text fontSize="sm">{item?.nome}</Text>
-                  <Text lineClamp={3} fontSize="xs" mt="2">
-                    {item?.descricao}
+        {Object.entries(assistentesFiltradosEAgrupados).map(([key, grupo]) => {
+          return (
+            <Box key={key} p="2">
+              <Flex justifyContent="space-between" mb="4">
+                <Box px="2" py="1" rounded="md">
+                  <Text color="brand.600" fontSize="sm">
+                    {grupo?.nome}
                   </Text>
-                  <Flex
-                    mt="4"
-                    gap="4"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Box bg="gray.50" px="2" py="1" rounded="md" shadow="xs">
-                      <Text color="brand.500" fontSize="sm">
-                        {item?.aplicativo?.nome}
-                      </Text>
-                    </Box>
-                  </Flex>
                 </Box>
-              );
-            }}
-          />
-        ))}
+              </Flex>
+              <Flex px="2" gap="4">
+                {grupo.assistentes?.map((item) => (
+                  <AssistenteConfigDialog
+                    defaultValues={{
+                      ...item,
+                      aplicativo: item?.aplicativo?._id,
+                    }}
+                    trigger={() => {
+                      return (
+                        <Box
+                          cursor="pointer"
+                          bg="white"
+                          rounded="lg"
+                          px="4"
+                          py="2"
+                          borderLeft="2px solid"
+                          borderColor="brand.300"
+                          minH="72px"
+                          w="256px"
+                          shadow="xs"
+                        >
+                          <Text fontSize="sm">{item?.nome}</Text>
+                          <Text lineClamp={2} fontSize="xs" mt="2">
+                            {item?.descricao}
+                          </Text>
+                        </Box>
+                      );
+                    }}
+                  />
+                ))}
+              </Flex>
+            </Box>
+          );
+        })}
       </Flex>
     </Box>
   );

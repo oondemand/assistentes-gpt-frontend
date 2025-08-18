@@ -33,7 +33,7 @@ export const Header = () => {
       <Link to="/">
         <Box as="span" fontSize="xl" fontWeight="bold" color="brand.500">
           <Text fontSize="2xl" fontWeight="700">
-            oondemand
+            Assistentes
           </Text>
         </Box>
       </Link>

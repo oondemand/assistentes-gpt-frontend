@@ -2,15 +2,15 @@ import { Settings, HardHat, LayoutDashboard } from "lucide-react";
 
 export const menuItems = [
   {
-    title: "Aplicativos",
-    icon: () => <LayoutDashboard strokeWidth={2.25} size={20} />,
-    href: "/",
-  },
-  {
     title: "Assistentes",
     icon: HardHat,
-    href: "/assistentes",
+    href: "/",
   },
+  // {
+  //   title: "Assistentes",
+  //   icon: HardHat,
+  //   href: "/assistentes",
+  // },
   {
     title: "Configurações",
     icon: Settings,

@@ -80,7 +80,7 @@ export const Ativacao = () => {
           borderLeft="2px solid"
           borderColor="cyan.500"
         >
-          <Heading>Oondemand</Heading>
+          <Heading>Assistentes</Heading>
           <Text>Formulário de ativação</Text>
 
           <Box w="xs" mt="6">

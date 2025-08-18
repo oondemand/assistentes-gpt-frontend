@@ -36,7 +36,9 @@ export const AuthLayout = () => {
     const token = searchParams.get("code");
     if (token) {
       localStorage.setItem("token", token);
-      navigate(location.pathname, { replace: true });
+      const params = new URLSearchParams(searchParams);
+      params.delete("code");
+      navigate(`${location.pathname}?${params.toString()}`, { replace: true });
     }
   }, [searchParams]);
 
@@ -87,7 +89,7 @@ export const AuthLayout = () => {
             <Box w="120px">
               {/* <img src="/logo_rakuten_purple.png" alt="RAKUTEN" /> */}
               <Text fontSize="lg" fontWeight="700">
-                oondemand
+                Assistentes
               </Text>
             </Box>
           </Link>

@@ -1,6 +1,5 @@
 import { DefaultField } from "../../components/buildForm/filds/default";
 import { z } from "zod";
-import { SelectAssistantField } from "../../components/buildForm/filds/selectAssistantField";
 import { TextareaField } from "../../components/buildForm/filds/textarea";
 import { SelectAplicativoField } from "../../components/buildForm/filds/selectAplicativo";
 
@@ -35,22 +34,18 @@ export const createDynamicFormFields = () => {
       ],
     },
     {
-      group: [
-        {
-          accessorKey: "instrucao",
-          label: "Instrução",
-          render: TextareaField,
-          validation: z.string().optional(),
-          colSpan: 4,
-        },
-        {
-          accessorKey: "mensagemInicial",
-          label: "Mensagem inicial",
-          render: TextareaField,
-          validation: z.string().optional(),
-          colSpan: 4,
-        },
-      ],
+      accessorKey: "mensagemInicial",
+      label: "Mensagem inicial",
+      render: DefaultField,
+      validation: z.string().optional(),
+      colSpan: 4,
+    },
+    {
+      accessorKey: "instrucao",
+      label: "Instrução",
+      render: (props) => <TextareaField variant="outline" {...props} h="44" />,
+      validation: z.string().optional(),
+      colSpan: 4,
     },
   ];
 };
