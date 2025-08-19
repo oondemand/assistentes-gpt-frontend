@@ -1,4 +1,4 @@
-# central-oondemand-frontend
+# assistentes-gpt-frontend
 
 ![GitHub stars](https://img.shields.io/github/stars/oondemand/cst-backend)
 ![GitHub issues](https://img.shields.io/github/issues/oondemand/cst-backend)
@@ -23,7 +23,7 @@
 
 ## 1. Visão Geral do Projeto
 
-O **central-oondemand-frontend** é uma aplicação desenvolvida em **React.js**, que faz parte da plataforma **OonDemand v2**. A aplicação fornece uma interface amigável e responsiva para gerenciar tickets, prestadores de serviço, integrações com o sistema Omie, e outras operações administrativas. O frontend foi desenvolvido para proporcionar uma experiência de usuário fluida e intuitiva, utilizando práticas modernas de desenvolvimento.
+O **assistentes-gpt-frontend** é uma aplicação desenvolvida em **React.js**, que faz parte da plataforma **OonDemand v2**. A aplicação fornece uma interface amigável e responsiva para gerenciar tickets, prestadores de serviço, integrações com o sistema Omie, e outras operações administrativas. O frontend foi desenvolvido para proporcionar uma experiência de usuário fluida e intuitiva, utilizando práticas modernas de desenvolvimento.
 
 ## 2. Tecnologias Utilizadas
 
@@ -67,8 +67,8 @@ src/
 1. Clone esse repositório localmente:
 
 ```bash
-git clone https://github.com/oondemand/central-oondemand-frontend.git
-cd central-oondemand-frontend
+git clone https://github.com/oondemand/assistentes-gpt-frontend.git
+cd assistentes-gpt-frontend
 ```
 
 2. Instale as dependências

@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: central-oondemand-frontend-homolog
-  namespace: central-oondemand-homolog
+  name: assistentes-gpt-frontend-homolog
+  namespace: assistentes-gpt-homolog
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: central-oondemand-frontend-homolog
+      app: assistentes-gpt-frontend-homolog
   template:
     metadata:
       labels:
-        app: central-oondemand-frontend-homolog
+        app: assistentes-gpt-frontend-homolog
     spec:
       containers:
-        - name: central-oondemand-frontend-homolog-container
-          image: ghcr.io/oondemand/central-oondemand-frontend:${IMAGE_TAG}-homolog
+        - name: assistentes-gpt-frontend-homolog-container
+          image: ghcr.io/oondemand/assistentes-gpt-frontend:${IMAGE_TAG}-homolog
           ports:
             - containerPort: 3000
           resources:
