@@ -13,10 +13,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - central.oondemand.online
+        - assistentes-gpt.oondemand.online
       secretName: app-tls
   rules:
-    - host: central.oondemand.online
+    - host: assistentes-gpt.oondemand.online
       http:
         paths:
           - path: /
