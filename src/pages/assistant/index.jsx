@@ -1,5 +1,5 @@
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQueries, useQuery } from "@tanstack/react-query";
 
 import { Filter, Settings, Table } from "lucide-react";
 import { AssistantConfigService } from "../../service/assistant-config";
@@ -10,56 +10,71 @@ import { Tooltip } from "../../components/ui/tooltip";
 import { AssistenteConfigDialog } from "./dialog";
 import { DefaultTrigger } from "../../components/formDialog/form-trigger";
 import { SelectAplicativo } from "../../components/selectAplicativo";
+import { AplicativoService } from "../../service/aplicativo";
 
-function agruparPorAppId(assistentes) {
-  if (!assistentes || assistentes.length === 0) return [];
-  return assistentes.reduce((grupo, assistente) => {
-    const appId = assistente.aplicativo?._id;
-    const appNome = assistente.aplicativo?.nome;
+function agruparPorAplicativos({ assistentes, aplicativos }) {
+  if (!aplicativos || !assistentes) return [];
+  const map = new Map(
+    aplicativos.map((aplicativo) => [
+      aplicativo._id,
+      { nome: aplicativo.nome, _id: aplicativo._id, assistentes: [] },
+    ])
+  );
 
-    if (!grupo[appId]) {
-      grupo[appId] = {
-        nome: appNome,
-        assistentes: [],
-      };
-    }
+  for (const assistente of assistentes) {
+    const v = map.get(assistente.aplicativo);
+    map.set(assistente.aplicativo, {
+      ...v,
+      assistentes: [...v.assistentes, assistente],
+    });
+  }
 
-    grupo[appId].assistentes.push(assistente);
-    return grupo;
-  }, {});
+  return Array.from(map.values());
 }
 
 export const Assistentes = () => {
   const [searchTerm, setSearchTerm] = useQueryParam("searchTerm");
   const [app, setApp] = useQueryParam("app");
 
-  const { data } = useQuery({
-    queryFn: AssistantConfigService.listarAssistenteAtivos,
-    queryKey: ["assistentes-ativos"],
-    staleTime: 1000 * 60, //1m
-    placeholderData: keepPreviousData,
+  const [assistentesQuery, aplicativosQuery] = useQueries({
+    queries: [
+      {
+        queryKey: ["assistentes-ativos"],
+        queryFn: AssistantConfigService.listarAssistenteAtivos,
+        staleTime: 1000 * 60, // 1 minuto
+        placeholderData: keepPreviousData,
+      },
+      {
+        queryKey: ["listar-aplicativos"],
+        queryFn: AplicativoService.listarAplicativos,
+        staleTime: 1000 * 60 * 10, // 10 minutos
+      },
+    ],
   });
 
-  const assistentesFiltradosPorTermoDeBusca =
+  const assistentes = assistentesQuery?.data?.assistentes;
+  const aplicativos = aplicativosQuery?.data?.aplicativos;
+
+  const assistentesPorTermoDeBusca =
     searchTerm?.toLowerCase()?.trim()?.length > 2
-      ? data?.assistentes?.filter((assistente) => {
+      ? assistentes?.filter((assistente) => {
           const term = searchTerm?.toLowerCase()?.trim();
           return (
             assistente?.nome?.toLowerCase()?.includes(term) ||
-            assistente?._id === searchTerm ||
-            assistente?.aplicativo?._id === searchTerm ||
-            assistente?.aplicativo?.appKey === searchTerm
+            assistente?._id === searchTerm
           );
         })
-      : data?.assistentes;
+      : assistentes;
 
-  const filtradosPorApp = app
-    ? assistentesFiltradosPorTermoDeBusca?.filter(
-        (assistente) => assistente?.aplicativo?._id === app
-      )
-    : assistentesFiltradosPorTermoDeBusca;
+  const assistentesPorApp = app
+    ? assistentesPorTermoDeBusca?.filter((ass) => ass?.aplicativo === app)
+    : assistentesPorTermoDeBusca;
 
-  const assistentesFiltradosEAgrupados = agruparPorAppId(filtradosPorApp);
+  const assistentesFiltradosEAgrupados = agruparPorAplicativos({
+    aplicativos:
+      app !== "" ? aplicativos?.filter((e) => e?._id === app) : aplicativos,
+    assistentes: assistentesPorApp,
+  });
 
   return (
     <Box>
@@ -134,19 +149,19 @@ export const Assistentes = () => {
           </Flex>
         </Flex>
       </Flex>
-      <Flex wrap="wrap" gap="8" mt="8">
-        {Object.entries(assistentesFiltradosEAgrupados).map(([key, grupo]) => {
+      <Box wrap="wrap" gap="8" mt="8">
+        {assistentesFiltradosEAgrupados.map((item) => {
           return (
-            <Box key={key} p="2">
+            <Box key={item?._id} p="2">
               <Flex justifyContent="space-between" mb="4">
                 <Box px="2" py="1" rounded="md">
                   <Text color="brand.600" fontSize="sm">
-                    {grupo?.nome}
+                    {item?.nome}
                   </Text>
                 </Box>
               </Flex>
               <Flex px="2" gap="4">
-                {grupo.assistentes?.map((item) => (
+                {item?.assistentes?.map((item) => (
                   <AssistenteConfigDialog
                     defaultValues={{
                       ...item,
@@ -179,7 +194,7 @@ export const Assistentes = () => {
             </Box>
           );
         })}
-      </Flex>
+      </Box>
     </Box>
   );
 };

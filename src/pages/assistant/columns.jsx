@@ -22,10 +22,7 @@ export const makeAssistenteConfigDynamicColumns = () => {
           <DeleteAssistenteConfigAction id={props.row.original?._id} />
           <AssistenteConfigDialog
             label="Assistente"
-            defaultValues={{
-              ...props.row.original,
-              aplicativo: props?.row?.original?.aplicativo?._id,
-            }}
+            defaultValues={props.row.original}
           />
         </TableActionsCell>
       ),

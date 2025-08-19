@@ -30,7 +30,7 @@ export const SelectAplicativoCell = ({
 
   const findItemByInitialValue = (options) => {
     return options.find((option) => {
-      return option.value === initialValue?._id;
+      return option.value === initialValue;
     });
   };
 
