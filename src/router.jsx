@@ -77,7 +77,7 @@ export const router = createBrowserRouter([
       // { path: "/roteiro-de-testes", element: <RoteiroDeTestes /> },
       // { path: "/pagos", element: <TicketsPagosPage /> },
       // { path: "/etapas", element: <EtapasPage /> },
-      // { path: "/assistentes", element: <Assistentes /> },
+      // { path: "/aplicativos", element: <Home /> },
       { path: "/assistentes/todos", element: <AssistentesDatagrid /> },
       // { path: "/moedas", element: <MoedaPage /> },
       // { path: "/configuracoes/integracao", element: <IntegracoesConfigPage /> },

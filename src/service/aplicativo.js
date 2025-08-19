@@ -5,6 +5,11 @@ const listarAplicativos = async () => {
   return data;
 };
 
+const sincronizar = async () => {
+  return await api.post("/aplicativos/sincronizar");
+};
+
 export const AplicativoService = {
+  sincronizar,
   listarAplicativos,
 };

@@ -1,7 +1,7 @@
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
-import { Filter } from "lucide-react";
+import { Filter, RotateCcw } from "lucide-react";
 import { AplicativoService } from "../../service/aplicativo";
 import { DebouncedInput } from "../../components/DebouncedInput";
 import { useAuth } from "../../hooks/useAuth";
@@ -32,14 +32,23 @@ export const Home = () => {
   return (
     <>
       <Flex justifyContent="space-between" alignItems="flex-start">
-        <Box>
-          <Text color="gray.400" fontSize="xs">
-            Visão geral
-          </Text>
-          <Text color="gray.700" fontSize="lg">
-            Aplicativos
-          </Text>
-        </Box>
+        <Flex alignItems="middle" gap="4">
+          <Box>
+            <Text color="gray.400" fontSize="xs">
+              Visão geral
+            </Text>
+            <Text color="gray.700" fontSize="lg">
+              Aplicativos
+            </Text>
+          </Box>
+          <Button
+            unstyled
+            color="gray.400"
+            onClick={() => AplicativoService.sincronizar()}
+          >
+            <RotateCcw />
+          </Button>
+        </Flex>
         <Flex gap="4">
           <Flex alignItems="center" color="gray.400" gap="3">
             <Filter size={22} />

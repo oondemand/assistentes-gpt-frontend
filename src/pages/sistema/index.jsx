@@ -45,9 +45,11 @@ export const SistemaPage = () => {
 
   return (
     <Flex flex="1" flexDir="column" py="8" pl="6" bg="#F8F9FA" overflow="auto">
-      <Text fontWeight="semibold" fontSize="lg">
-        Configurações de sistema
-      </Text>
+      <Flex>
+        <Text fontWeight="semibold" fontSize="lg">
+          Configurações de sistema
+        </Text>
+      </Flex>
       <Flex
         mt="4"
         p="6"
