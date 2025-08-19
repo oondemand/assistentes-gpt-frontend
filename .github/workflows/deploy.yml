@@ -1,11 +1,12 @@
 name: Deploy central oondemand frontend
 
 on:
-  pull_request:
+  # pull_request:
+  push:
     branches:
       - main #
-    types:
-      - closed
+    # types:
+    #   - closed
 
 jobs:
   build_and_publish:
