@@ -44,7 +44,7 @@ export const SistemaPage = () => {
   };
 
   return (
-    <Flex flex="1" flexDir="column" py="8" pl="6" bg="#F8F9FA" overflow="auto">
+    <>
       <Flex>
         <Text fontWeight="semibold" fontSize="lg">
           Configurações de sistema
@@ -84,6 +84,6 @@ export const SistemaPage = () => {
             </Box>
           ))}
       </Flex>
-    </Flex>
+    </>
   );
 };

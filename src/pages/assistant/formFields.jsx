@@ -2,6 +2,7 @@ import { DefaultField } from "../../components/buildForm/filds/default";
 import { z } from "zod";
 import { TextareaField } from "../../components/buildForm/filds/textarea";
 import { SelectAplicativoField } from "../../components/buildForm/filds/selectAplicativo";
+import { SelectListaField } from "../../components/buildForm/filds/selectListaField";
 
 export const createDynamicFormFields = () => {
   return [
@@ -28,7 +29,9 @@ export const createDynamicFormFields = () => {
           accessorKey: "aplicativo",
           label: "Aplicativo",
           render: SelectAplicativoField,
-          validation: z.any(),
+          validation: z
+            .string({ message: "Aplicativo é um campo obrigatório!" })
+            .nonempty({ message: "Aplicativo é um campo obrigatório!" }),
           colSpan: 1,
         },
       ],
@@ -38,7 +41,17 @@ export const createDynamicFormFields = () => {
       label: "Mensagem inicial",
       render: DefaultField,
       validation: z.string().optional(),
-      colSpan: 4,
+      colSpan: 3,
+    },
+    {
+      accessorKey: "modelo",
+      label: "Modelo",
+      render: SelectListaField,
+      cod: "modelo-open-ia",
+      validation: z
+        .string({ message: "Modelo é um campo obrigatório!" })
+        .nonempty({ message: "Modelo é um campo obrigatório!" }),
+      colSpan: 1,
     },
     {
       accessorKey: "instrucao",

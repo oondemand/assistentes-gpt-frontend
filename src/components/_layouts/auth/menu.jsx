@@ -20,6 +20,10 @@ export const menuItems = [
         title: "Sistema",
         href: "/sistema",
       },
+      {
+        title: "Listas",
+        href: "/listas",
+      },
     ],
   },
 ];

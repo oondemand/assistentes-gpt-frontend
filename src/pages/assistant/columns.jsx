@@ -5,6 +5,7 @@ import { AssistenteConfigDialog } from "./dialog";
 import { TableActionsCell } from "../../components/dataGrid/cells/tableActionsCell";
 import { DeleteAssistenteConfigAction } from "../../components/dataGrid/actions/deleteAssistenteConfigButton";
 import { SelectAplicativoCell } from "../../components/dataGrid/cells/selectAplicativoCell";
+import { SelectListaCell } from "../../components/dataGrid/cells/selectLista";
 
 export const makeAssistenteConfigDynamicColumns = () => {
   const STATUS = [
@@ -66,6 +67,14 @@ export const makeAssistenteConfigDynamicColumns = () => {
       enableColumnFilter: true,
       enableSorting: false,
       meta: { filterKey: "mensagemInicial" },
+    },
+    {
+      accessorKey: "modelo",
+      header: "Modelo",
+      cell: (props) => <SelectListaCell {...props} cod="modelo-open-ia" />,
+      enableColumnFilter: true,
+      enableSorting: false,
+      meta: { filterKey: "modelo" },
     },
     {
       accessorKey: "status",

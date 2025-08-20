@@ -12,7 +12,7 @@ import { AuthLayout } from "./components/_layouts/auth";
 // import { UsuariosPage } from "./pages/usuarios/index";
 // import { AlterarSenha } from "./pages/alterarSenha";
 // import { RegistrosPage } from "./pages/registros";
-// import { Listas } from "./pages/listas";
+import { Listas } from "./pages/listas";
 import { SistemaPage } from "./pages/sistema";
 // import { TicketsPagosPage } from "./pages/ticketsPagos"
 // import { EtapasPage } from "./pages/etapas";
@@ -70,7 +70,7 @@ export const router = createBrowserRouter([
       // },
       // { path: "/usuarios", element: <UsuariosPage /> },
       // { path: "/registros", element: <RegistrosPage /> },
-      // { path: "/listas", element: <Listas /> },
+      { path: "/listas", element: <Listas /> },
       { path: "/sistema", element: <SistemaPage /> },
       // { path: "/doc", element: <Doc /> },
       // { path: "/changelog", element: <ChangelogPage /> },
