@@ -12,6 +12,7 @@ import {
   IconTrigger,
 } from "../../components/formDialog/form-trigger";
 import { ORIGENS } from "../../constants/origens";
+import { UploadAnexos } from "./anexos";
 
 export const AssistenteConfigDialog = ({
   defaultValues = null,
@@ -68,7 +69,9 @@ export const AssistenteConfigDialog = ({
         }}
         open={open}
         key="ASSISTENTE_CONFIG"
-      />
+      >
+        <UploadAnexos assistente={data} />
+      </FormDialog>
     </Box>
   );
 };

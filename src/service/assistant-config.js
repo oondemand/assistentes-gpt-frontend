@@ -5,6 +5,23 @@ const listarAssistenteAtivos = async () => {
   return data;
 };
 
+const anexarArquivo = async ({ id, file }) => {
+  const formData = new FormData();
+  formData.append("arquivo", file);
+
+  return await api.post(`/assistentes/${id}/upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+const removerArquivo = async ({ assistenteId, arquivoId }) => {
+  return await api.post(
+    `/assistentes/${assistenteId}/remover-arquivo/${arquivoId}`
+  );
+};
+
 const listarAssistenteConfig = async ({ filters }) => {
   const { data } = await api.get("/assistentes", { params: filters });
   return data;
@@ -37,9 +54,11 @@ const deleteAssistantConfig = async ({ id, origem }) => {
 };
 
 export const AssistantConfigService = {
+  anexarArquivo,
+  removerArquivo,
+  deleteAssistantConfig,
   listarAssistenteConfig,
+  listarAssistenteAtivos,
   alterarAssistenteConfig,
   adicionarAssistenteConfig,
-  listarAssistenteAtivos,
-  deleteAssistantConfig,
 };

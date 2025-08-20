@@ -15,6 +15,7 @@ import {
 
 import { AssistantButton } from "../ui/ia-button";
 import { useVisibleInputForm } from "../../hooks/useVisibleInputForms";
+import { UploadAnexos } from "../../pages/assistant/anexos";
 
 export const FormDialog = ({
   open,
@@ -95,8 +96,10 @@ export const FormDialog = ({
                 data={data}
                 onSubmit={onSubmit}
               />
+
               {children}
             </DialogBody>
+
             <DialogCloseTrigger asChild>
               <CloseButton size="sm" />
             </DialogCloseTrigger>

@@ -91,10 +91,6 @@ const arquivarTicket = async ({ id, origem }) => {
   );
 };
 
-const getFile = async ({ id }) => {
-  return await api.get(`/arquivos/${id}`);
-};
-
 const adicionarServico = async ({ ticketId, servicoId, origem }) => {
   const { data } = await api.post(
     `/servicos-tomados/tickets/adicionar-servico/${ticketId}/${servicoId}`,
@@ -176,7 +172,6 @@ export const ServicoTomadoTicketService = {
   reprovarTicket,
   deleteFile,
   uploadFiles,
-  getFile,
   removerServico,
   adicionarServico,
   listarTicketsArquivados,
