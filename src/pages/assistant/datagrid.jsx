@@ -9,9 +9,13 @@ import { AssistenteConfigDialog } from "./dialog";
 import { AssistantConfigService } from "../../service/assistant-config";
 import { useUpdateAssistantConfig } from "../../hooks/api/assistant-config/useUpdateAssistantConfig";
 import { ORIGENS } from "../../constants/origens";
+import { useAuth } from "../../hooks/useAuth";
+import { toaster } from "../../components/ui/toaster";
 
 export const AssistentesDatagrid = () => {
+  const { user } = useAuth();
   const columns = useMemo(() => makeAssistenteConfigDynamicColumns({}), []);
+
   const { filters, table } = useDataGrid({ columns, key: "ASSISTENTE_CONFIG" });
 
   const { data, isLoading, isFetching } = useQuery({
@@ -24,7 +28,7 @@ export const AssistentesDatagrid = () => {
   const updateAssistantConfig = useUpdateAssistantConfig({
     origem: ORIGENS.DATAGRID,
     onSuccess: () =>
-      queryClient.refetchQueries(["listar-assistente", { filters }]),
+      queryClient.invalidateQueries(["listar-assistente", { filters }]),
   });
 
   return (
@@ -40,9 +44,16 @@ export const AssistentesDatagrid = () => {
           rowCount={data?.pagination?.totalItems}
           isDataLoading={isLoading || isFetching}
           onUpdateData={async (values) => {
-            await updateAssistantConfig.mutateAsync({
-              id: values.id,
-              body: values.data,
+            if (user?.editarAssistente) {
+              await updateAssistantConfig.mutateAsync({
+                id: values.id,
+                body: values.data,
+              });
+            }
+
+            toaster.create({
+              type: "error",
+              description: "Você não tem permissão para editar esse campo.",
             });
           }}
         />

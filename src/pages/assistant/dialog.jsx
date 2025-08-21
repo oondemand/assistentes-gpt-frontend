@@ -13,6 +13,7 @@ import {
 } from "../../components/formDialog/form-trigger";
 import { ORIGENS } from "../../constants/origens";
 import { UploadAnexos } from "./anexos";
+import { useAuth } from "../../hooks/useAuth";
 
 export const AssistenteConfigDialog = ({
   defaultValues = null,
@@ -22,6 +23,7 @@ export const AssistenteConfigDialog = ({
   const [data, setData] = useState(defaultValues);
   const [open, setOpen] = useState(false);
   const fields = useMemo(() => createDynamicFormFields(), [data]);
+  const { user } = useAuth();
 
   const updateAssistenteConfig = useUpdateAssistantConfig({
     origem: ORIGENS.FORM,
@@ -58,6 +60,7 @@ export const AssistenteConfigDialog = ({
         {!defaultValues && !trigger && <DefaultTrigger />}
       </Box>
       <FormDialog
+        disabled={!user?.editarAssistente}
         data={data}
         fields={fields}
         label={label}
@@ -68,7 +71,7 @@ export const AssistenteConfigDialog = ({
           setData(defaultValues);
         }}
         open={open}
-        key="ASSISTENTE_CONFIG"
+        stateKey="ASSISTENTE_CONFIG"
       >
         <UploadAnexos assistente={data} />
       </FormDialog>

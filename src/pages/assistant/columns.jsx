@@ -6,12 +6,15 @@ import { TableActionsCell } from "../../components/dataGrid/cells/tableActionsCe
 import { DeleteAssistenteConfigAction } from "../../components/dataGrid/actions/deleteAssistenteConfigButton";
 import { SelectAplicativoCell } from "../../components/dataGrid/cells/selectAplicativoCell";
 import { SelectListaCell } from "../../components/dataGrid/cells/selectLista";
+import { useAuth } from "../../hooks/useAuth";
 
 export const makeAssistenteConfigDynamicColumns = () => {
   const STATUS = [
     { label: "Ativo", value: "ativo" },
     { label: "Inativo", value: "inativo" },
   ];
+
+  const { user } = useAuth();
 
   return [
     {
@@ -20,7 +23,10 @@ export const makeAssistenteConfigDynamicColumns = () => {
       enableSorting: false,
       cell: (props) => (
         <TableActionsCell>
-          <DeleteAssistenteConfigAction id={props.row.original?._id} />
+          {user?.editarAssistente && (
+            <DeleteAssistenteConfigAction id={props.row.original?._id} />
+          )}
+
           <AssistenteConfigDialog
             label="Assistente"
             defaultValues={props.row.original}

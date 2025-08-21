@@ -27,6 +27,7 @@ export const FormDialog = ({
   onSubmit,
   stateKey,
   children,
+  disabled = false,
 }) => {
   const { inputsVisibility, setInputsVisibility } = useVisibleInputForm({
     key: stateKey,
@@ -89,6 +90,7 @@ export const FormDialog = ({
             </DialogHeader>
             <DialogBody overflowY="auto" className="dialog-custom-scrollbar">
               <BuildForm
+                disabled={disabled}
                 visibleState={inputsVisibility}
                 fields={fields}
                 gridColumns={4}

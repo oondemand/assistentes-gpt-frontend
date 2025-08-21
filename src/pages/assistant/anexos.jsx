@@ -12,9 +12,11 @@ import { saveAs } from "file-saver";
 import { queryClient } from "../../config/react-query";
 import { useDeleteFileFromAssistente } from "../../hooks/api/assistant-config/useDeleteFile";
 import { useConfirmation } from "../../hooks/useConfirmation";
+import { useAuth } from "../../hooks/useAuth";
 
 export const UploadAnexos = ({ assistente }) => {
   const { requestConfirmation } = useConfirmation();
+  const { user } = useAuth();
 
   const anexarArquivoMutation = useUploadFileToAssistente({
     onSuccess: () => queryClient.invalidateQueries(["assistentes-ativos"]),
@@ -56,29 +58,31 @@ export const UploadAnexos = ({ assistente }) => {
     <Box mt="6" p="4" border="1px dashed" rounded="md" borderColor="gray.200">
       <Flex alignItems="center" pb="2">
         <Text fontWeight="medium">Base de conhecimento (arquivos)</Text>
-        <FileUploadRoot
-          onFileAccept={async (e) => {
-            await anexarArquivoMutation.mutateAsync({
-              file: e.files[0],
-              id: assistente._id,
-            });
-          }}
-        >
-          <FileUploadTrigger
-            disabled={anexarArquivoMutation.isPending}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
+        {user?.editarAssistente && (
+          <FileUploadRoot
+            onFileAccept={async (e) => {
+              await anexarArquivoMutation.mutateAsync({
+                file: e.files[0],
+                id: assistente._id,
+              });
             }}
           >
-            <Tooltip content="Anexar arquivo">
-              <Button variant="outline" size="xs">
-                <Upload />
-                Upload
-              </Button>
-            </Tooltip>
-          </FileUploadTrigger>
-        </FileUploadRoot>
+            <FileUploadTrigger
+              disabled={anexarArquivoMutation.isPending}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+              }}
+            >
+              <Tooltip content="Anexar arquivo">
+                <Button variant="outline" size="xs">
+                  <Upload />
+                  Upload
+                </Button>
+              </Tooltip>
+            </FileUploadTrigger>
+          </FileUploadRoot>
+        )}
       </Flex>
       {assistente?.arquivos?.map((item) => (
         <Flex
@@ -110,20 +114,20 @@ export const UploadAnexos = ({ assistente }) => {
             >
               <Download size={16} />
             </Button>
-            {/* {!onlyReading && ( */}
-            <Button
-              onClick={async () =>
-                await handleDeleteFileFromTicket({
-                  id: item?._id,
-                })
-              }
-              color="red"
-              cursor="pointer"
-              unstyled
-            >
-              <CircleX size={16} />
-            </Button>
-            {/* )} */}
+            {user?.editarAssistente && (
+              <Button
+                onClick={async () =>
+                  await handleDeleteFileFromTicket({
+                    id: item?._id,
+                  })
+                }
+                color="red"
+                cursor="pointer"
+                unstyled
+              >
+                <CircleX size={16} />
+              </Button>
+            )}
           </Flex>
         </Flex>
       ))}

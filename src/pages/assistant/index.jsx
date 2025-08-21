@@ -11,6 +11,7 @@ import { AssistenteConfigDialog } from "./dialog";
 import { DefaultTrigger } from "../../components/formDialog/form-trigger";
 import { SelectAplicativo } from "../../components/selectAplicativo";
 import { AplicativoService } from "../../service/aplicativo";
+import { useAuth } from "../../hooks/useAuth";
 
 function agruparPorAplicativos({ assistentes, aplicativos }) {
   if (!aplicativos || !assistentes) return [];
@@ -35,6 +36,7 @@ function agruparPorAplicativos({ assistentes, aplicativos }) {
 export const Assistentes = () => {
   const [searchTerm, setSearchTerm] = useQueryParam("searchTerm");
   const [app, setApp] = useQueryParam("app");
+  const { user } = useAuth();
 
   const [assistentesQuery, aplicativosQuery] = useQueries({
     queries: [
@@ -83,19 +85,21 @@ export const Assistentes = () => {
           <Text fontSize="lg" color="gray.700" fontWeight="semibold">
             Assistentes
           </Text>
-          <Tooltip content="Visualizar todos em tabela">
-            <Link to="/assistentes/todos">
-              <Button
-                colorPalette="cyan"
-                p="1.5"
-                rounded="2xl"
-                cursor="pointer"
-                size="sm"
-              >
-                <Table />
-              </Button>
-            </Link>
-          </Tooltip>
+          {user?.editarAssistente && (
+            <Tooltip content="Visualizar todos em tabela">
+              <Link to="/assistentes/todos">
+                <Button
+                  colorPalette="cyan"
+                  p="1.5"
+                  rounded="2xl"
+                  cursor="pointer"
+                  size="sm"
+                >
+                  <Table />
+                </Button>
+              </Link>
+            </Tooltip>
+          )}
         </Flex>
         <Flex gap="4">
           <Flex alignItems="center" color="gray.400" gap="3">
@@ -133,19 +137,21 @@ export const Assistentes = () => {
               onChange={setSearchTerm}
             />
 
-            <AssistenteConfigDialog
-              trigger={() => {
-                return (
-                  <DefaultTrigger
-                    variant="solid"
-                    title="Novo assistente"
-                    colorPalette="cyan"
-                    color="white"
-                    _hover={{ bg: "cyan.550" }}
-                  />
-                );
-              }}
-            />
+            {user?.editarAssistente && (
+              <AssistenteConfigDialog
+                trigger={() => {
+                  return (
+                    <DefaultTrigger
+                      variant="solid"
+                      title="Novo assistente"
+                      colorPalette="cyan"
+                      color="white"
+                      _hover={{ bg: "cyan.550" }}
+                    />
+                  );
+                }}
+              />
+            )}
           </Flex>
         </Flex>
       </Flex>
@@ -163,10 +169,7 @@ export const Assistentes = () => {
               <Flex px="2" gap="4">
                 {item?.assistentes?.map((item) => (
                   <AssistenteConfigDialog
-                    defaultValues={{
-                      ...item,
-                      aplicativo: item?.aplicativo?._id,
-                    }}
+                    defaultValues={item}
                     trigger={() => {
                       return (
                         <Box
